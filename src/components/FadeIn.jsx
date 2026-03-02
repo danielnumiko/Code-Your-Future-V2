@@ -76,9 +76,9 @@ export function EyebrowMark({ delay = 0, fill = '#EE4344' }) {
 // Fires once when element scrolls into view.
 
 const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-const WORD_DUR    = 0.3   // seconds per word — total scales with heading length
-const MIN_WORD_DUR = 0.05
-const MAX_WORD_DUR = 0.4
+const WORD_DUR    = 0.08  // seconds per word — total scales with heading length
+const MIN_WORD_DUR = 0.03
+const MAX_WORD_DUR = 0.1
 
 export function GlitchHeading({ segments, style, className, as: Tag = 'p', delay: startDelay = 0 }) {
   const ref = useRef(null)

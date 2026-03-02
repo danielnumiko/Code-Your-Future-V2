@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 
 const navLinks = [
-  { label: 'Train with us', concept: 'v1' },
-  { label: 'Partner',       concept: 'v2' },
-  { label: 'Volunteer',     concept: 'v3' },
+  { label: 'Concept 1', concept: 'v1' },
+  { label: 'Concept 2', concept: 'v2' },
+  { label: 'Concept 3', concept: 'v3' },
   { label: 'About',         concept: 'v4' },
 ]
 

@@ -296,11 +296,11 @@ export default function HeroV3({ onSwitchConcept }) {
         display: 'flex', alignItems: 'center', gap: 20,
         padding: '20px 30px',
       }}>
-        <button style={navBtn} onClick={() => onSwitchConcept?.('v1')}>Train with us</button>
+        <button style={navBtn} onClick={() => onSwitchConcept?.('v1')}>Concept 1</button>
         <span style={{ fontFamily: 'Raleway, sans-serif', fontWeight: 900, fontSize: 18, color: RED, lineHeight: 1 }}>/</span>
-        <button style={navBtn} onClick={() => onSwitchConcept?.('v2')}>Partner</button>
+        <button style={navBtn} onClick={() => onSwitchConcept?.('v2')}>Concept 2</button>
         <span style={{ fontFamily: 'Raleway, sans-serif', fontWeight: 900, fontSize: 18, color: RED, lineHeight: 1 }}>/</span>
-        <button style={navBtn} onClick={() => onSwitchConcept?.('v3')}>Volunteer</button>
+        <button style={navBtn} onClick={() => onSwitchConcept?.('v3')}>Concept 3</button>
       </div>
 
       {/* ================================================================

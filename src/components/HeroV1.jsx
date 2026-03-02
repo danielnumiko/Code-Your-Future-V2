@@ -335,11 +335,10 @@ export default function HeroV1({ onSwitchConcept }) {
   return (
     <>
       {/* ── Hamburger — top right ───────────────────────────────────────────── */}
-      <motion.div
+      <div
         style={{
           position: 'fixed', right: 0, top: 0, zIndex: 100,
           width: HERO_TILE, height: HERO_TILE,
-          scale: hamburgerScale, transformOrigin: 'top right',
         }}
       >
         <div style={{ width: '100%', height: '100%', background: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center' }} aria-hidden="true">
@@ -349,7 +348,7 @@ export default function HeroV1({ onSwitchConcept }) {
             <rect y="16" width="24" height="2" fill="white" />
           </svg>
         </div>
-      </motion.div>
+      </div>
 
       {/* ── Fixed logo — top left ───────────────────────────────────────────── */}
       <div style={{
@@ -369,11 +368,11 @@ export default function HeroV1({ onSwitchConcept }) {
         display: 'flex', alignItems: 'center', gap: 10,
         padding: '20px 30px',
       }}>
-        <button style={navBtn} onClick={() => onSwitchConcept?.('v1')}>Train with us</button>
+        <button style={navBtn} onClick={() => onSwitchConcept?.('v1')}>Concept 1</button>
         <span style={{ fontFamily: 'Raleway, sans-serif', fontWeight: 900, fontSize: 18, color: GREEN, lineHeight: 1 }}>/</span>
-        <button style={navBtn} onClick={() => onSwitchConcept?.('v2')}>Partner</button>
+        <button style={navBtn} onClick={() => onSwitchConcept?.('v2')}>Concept 2</button>
         <span style={{ fontFamily: 'Raleway, sans-serif', fontWeight: 900, fontSize: 18, color: GREEN, lineHeight: 1 }}>/</span>
-        <button style={navBtn} onClick={() => onSwitchConcept?.('v3')}>Volunteer</button>
+        <button style={navBtn} onClick={() => onSwitchConcept?.('v3')}>Concept 3</button>
       </div>
 
       {/* ================================================================

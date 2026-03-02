@@ -12,7 +12,7 @@ export default function NewsletterV1() {
         <div className="flex justify-center mb-l">
           <motion.div
             style={{
-              width: 2,
+              width: 4,
               height: 'clamp(48px, 6vw, 96px)',
               background: GREEN,
               transformOrigin: 'top',

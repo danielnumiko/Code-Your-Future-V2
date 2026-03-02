@@ -342,11 +342,11 @@ export default function HeroV4({ onSwitchConcept }) {
         display: 'flex', alignItems: 'center', gap: 20,
         padding: '20px 30px',
       }}>
-        <button style={navBtn} onClick={() => onSwitchConcept?.('v1')}>Train with us</button>
+        <button style={navBtn} onClick={() => onSwitchConcept?.('v1')}>Concept 1</button>
         <span style={{ fontFamily: 'Raleway, sans-serif', fontWeight: 900, fontSize: 18, color: RED, lineHeight: 1 }}>/</span>
-        <button style={navBtn} onClick={() => onSwitchConcept?.('v2')}>Partner</button>
+        <button style={navBtn} onClick={() => onSwitchConcept?.('v2')}>Concept 2</button>
         <span style={{ fontFamily: 'Raleway, sans-serif', fontWeight: 900, fontSize: 18, color: RED, lineHeight: 1 }}>/</span>
-        <button style={navBtn} onClick={() => onSwitchConcept?.('v3')}>Volunteer</button>
+        <button style={navBtn} onClick={() => onSwitchConcept?.('v3')}>Concept 3</button>
       </div>
 
       {/* ================================================================
@@ -372,7 +372,6 @@ export default function HeroV4({ onSwitchConcept }) {
                 ref={videoRef}
                 autoPlay muted loop playsInline
                 className="absolute inset-0 w-full h-full object-cover ken-burns-4"
-                poster={POSTER}
               >
                 <source src="/hero-video.mp4" type="video/mp4" />
               </video>
@@ -389,9 +388,9 @@ export default function HeroV4({ onSwitchConcept }) {
                 Tile 1: left=1380, top=558  → zigzag, flipped
                 Tile 2: left=1554, top=732  → union, flipped
                 Tile 3: left=1379, top=906  → union, not flipped */}
-            <PatternOverlay variant="zigzag" flip={true}  style={{ left: '79.9vw', top: '32.3vw' }} />
-            <PatternOverlay variant="union"  flip={true}  style={{ left: '89.9vw', top: '42.4vw' }} />
-            <PatternOverlay variant="union"  flip={false} style={{ left: '79.9vw', top: '52.4vw' }} />
+            <PatternOverlay variant="zigzag" flip={true}  style={{ left: '79.9vw', bottom: '20vw' }} />
+            <PatternOverlay variant="union"  flip={true}  style={{ left: '89.9vw', bottom: '10vw' }} />
+            <PatternOverlay variant="union"  flip={false} style={{ left: '79.9vw', bottom: '0'    }} />
 
             <div style={{ position: 'absolute', left: 50, bottom: 50, maxWidth: '57.4vw' }}>
               <TextRevealSegments
