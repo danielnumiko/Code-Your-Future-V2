@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion'
+import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion'
 import { TextRevealSegments } from './FadeIn'
 import ShardLink from './ShardLink'
 import { DiamondMark } from './BrandAssetsV4'
@@ -456,52 +456,31 @@ function stickyProgress() {
             <motion.div className="relative overflow-hidden w-full"
               style={{ aspectRatio: tileAspect, scale: tileScale, x: tileX, y: tileY, transformOrigin: 'top left' }}
             >
-              <AnimatePresence mode="sync">
-                {!scaled ? (
-                  <motion.video
-                    key="holding"
-                    src="/hero-video.mp4"
-                    className="absolute inset-0 w-full h-full object-cover object-center"
-                    autoPlay muted loop playsInline
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  />
-                ) : (
-                  <>
-                    <motion.iframe
-                      key={`youtube-${watching}`}
-                      ref={videoRef}
-                      src={watching
-                        ? `https://www.youtube.com/embed/jz87O1kap7s?autoplay=1&mute=0&loop=1&playlist=jz87O1kap7s&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&color=white&origin=${encodeURIComponent(window.location.origin)}`
-                        : `https://www.youtube.com/embed/jz87O1kap7s?autoplay=1&mute=1&loop=1&playlist=jz87O1kap7s&controls=0&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&fs=0&color=white&origin=${encodeURIComponent(window.location.origin)}`
-                      }
-                      className="absolute inset-0 w-full h-full"
-                      style={{ border: 'none' }}
-                      allow="autoplay; encrypted-media"
-                      allowFullScreen
-                      onLoad={() => {
-                        setTimeout(() => {
-                          videoRef.current?.contentWindow?.postMessage(
-                            JSON.stringify({ event: 'listening' }),
-                            'https://www.youtube.com'
-                          )
-                        }, 500)
-                      }}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.5 }}
-                    />
-                    {!watching && (
-                      <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 5 }}>
-                        <WatchButton onClick={handleWatch} />
-                      </div>
-                    )}
-                  </>
-                )}
-              </AnimatePresence>
+              <iframe
+                key={`youtube-${watching}`}
+                ref={videoRef}
+                src={watching
+                  ? `https://www.youtube.com/embed/jz87O1kap7s?autoplay=1&mute=0&loop=1&playlist=jz87O1kap7s&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&color=white&origin=${encodeURIComponent(window.location.origin)}`
+                  : `https://www.youtube.com/embed/jz87O1kap7s?autoplay=1&mute=1&loop=1&playlist=jz87O1kap7s&controls=0&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&fs=0&color=white&origin=${encodeURIComponent(window.location.origin)}`
+                }
+                className="absolute inset-0 w-full h-full"
+                style={{ border: 'none' }}
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                onLoad={() => {
+                  setTimeout(() => {
+                    videoRef.current?.contentWindow?.postMessage(
+                      JSON.stringify({ event: 'listening' }),
+                      'https://www.youtube.com'
+                    )
+                  }, 500)
+                }}
+              />
+              {scaled && !watching && (
+                <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 5 }}>
+                  <WatchButton onClick={handleWatch} />
+                </div>
+              )}
 
             </motion.div>
           </div>
