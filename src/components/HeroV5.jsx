@@ -217,24 +217,24 @@ function stickyProgress() {
           <img src="/Logo.svg" alt="Code Your Future" style={{ height: 80, width: 'auto' }} />
         </a>
 
-        {/* Concept switcher — scrolls with page */}
-        <div className="cursor-pointer" style={{
+        {/* Nav links — scrolls with page */}
+        <nav className="cursor-pointer" style={{
           position: 'absolute', right: 50, top: 72, zIndex: 100,
           display: 'flex', alignItems: 'center', gap: 16,
         }}>
           {[
-            { label: 'Concept 1', v: 'v1' },
-            { label: 'Concept 2', v: 'v2' },
-            { label: 'Concept 3', v: 'v3' },
-            { label: 'Concept 4', v: 'v4', active: true },
+            { label: 'For Companies' },
+            { label: 'Train With Us' },
+            { label: 'Volunteer' },
+            { label: 'About' },
+            { label: 'Blog' },
           ].reduce((acc, link, i, arr) => {
             acc.push(
               <button
-                key={link.v}
-                style={{ ...navBtn, color: '#ffffff', fontWeight: link.active ? 700 : 600, borderBottom: link.active ? '2px solid #7b5cf6' : '2px solid transparent', paddingBottom: 10 }}
+                key={link.label}
+                style={{ ...navBtn, color: '#ffffff', fontWeight: 600, borderBottom: '2px solid transparent', paddingBottom: 10 }}
                 onMouseEnter={e => e.currentTarget.style.borderBottomColor = '#7b5cf6'}
-                onMouseLeave={e => e.currentTarget.style.borderBottomColor = link.active ? '#7b5cf6' : 'transparent'}
-                onClick={() => onSwitchConcept?.(link.v)}
+                onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}
               >
                 {link.label}
               </button>
@@ -244,7 +244,7 @@ function stickyProgress() {
             )
             return acc
           }, [])}
-        </div>
+        </nav>
 
         {/* Outer left — parallax */}
         <motion.div className="absolute flex flex-col"
