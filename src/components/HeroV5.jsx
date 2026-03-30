@@ -174,8 +174,8 @@ function WatchButton({ onClick }) {
       onMouseLeave={leave}
       style={{
         position: 'relative', overflow: 'hidden', cursor: 'pointer',
-        fontFamily: 'Raleway, sans-serif', fontWeight: 600, fontSize: 11,
-        padding: '10px 16px', border: '2px solid #fff',
+        fontFamily: 'Raleway, sans-serif', fontWeight: 600, fontSize: 12,
+        padding: '14px 24px', border: '2px solid #fff',
         background: '#fff', color: '#000',
         letterSpacing: '0.04em', textTransform: 'uppercase',
         display: 'flex', alignItems: 'center', gap: 8,
@@ -205,6 +205,7 @@ export default function HeroV5({ onSwitchConcept }) {
   const videoRef      = useRef(null)
   const sectionRef    = useRef(null)
   const [scaled, setScaled] = useState(false)
+  const [fullyScaled, setFullyScaled] = useState(false)
   const inViewRef     = useRef(false)
   const mosaicRef     = useRef(null)
   const { scrollYProgress: mosaic } = useScroll({
@@ -263,6 +264,7 @@ function stickyProgress() {
   useMotionValueEvent(mosaic, 'change', v => {
     const s = stickyProgress()
     setScaled(v >= s)
+    setFullyScaled(v >= 0.97)
   })
 
   const playerReadyRef = useRef(false)
@@ -476,7 +478,7 @@ function stickyProgress() {
                   }, 500)
                 }}
               />
-              {scaled && !watching && (
+              {fullyScaled && !watching && (
                 <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 5 }}>
                   <WatchButton onClick={handleWatch} />
                 </div>
