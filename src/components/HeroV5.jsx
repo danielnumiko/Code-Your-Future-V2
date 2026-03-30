@@ -136,6 +136,58 @@ const navBtn = {
   cursor: 'pointer', padding: 0, lineHeight: 1,
 }
 
+// ─── Mute button (ShardLink-style) ────────────────────────────────────────────
+
+function MuteButton({ muted, onClick }) {
+  const btnRef   = useRef(null)
+  const shardRef = useRef(null)
+  const labelRef = useRef(null)
+  const offscreen = { top: 'translateY(-110%)', right: 'translateX(110%)', bottom: 'translateY(110%)', left: 'translateX(-110%)' }
+  function getDir(e) {
+    const r = btnRef.current.getBoundingClientRect()
+    const dx = (e.clientX - r.left - r.width / 2) / (r.width / 2)
+    const dy = (e.clientY - r.top - r.height / 2) / (r.height / 2)
+    return Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'bottom' : 'top')
+  }
+  function enter(e) {
+    const dir = getDir(e)
+    shardRef.current.style.transition = 'none'
+    shardRef.current.style.transform = offscreen[dir]
+    shardRef.current.getBoundingClientRect()
+    shardRef.current.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+    shardRef.current.style.transform = 'translate(0,0)'
+    btnRef.current.style.borderColor = '#7b5cf6'
+    labelRef.current.style.color = '#fff'
+  }
+  function leave(e) {
+    const dir = getDir(e)
+    shardRef.current.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+    shardRef.current.style.transform = offscreen[dir]
+    btnRef.current.style.borderColor = 'rgba(255,255,255,0.4)'
+    labelRef.current.style.color = '#fff'
+  }
+  return (
+    <button
+      ref={btnRef}
+      onClick={onClick}
+      onMouseEnter={enter}
+      onMouseLeave={leave}
+      style={{
+        position: 'relative', overflow: 'hidden', cursor: 'pointer',
+        fontFamily: 'Raleway, sans-serif', fontWeight: 600, fontSize: 12,
+        padding: '14px 24px', border: '2px solid rgba(255,255,255,0.4)',
+        background: 'transparent', color: '#fff', marginTop: 16,
+        letterSpacing: '0.04em', textTransform: 'uppercase',
+      }}
+    >
+      <span ref={shardRef} aria-hidden="true" style={{ position: 'absolute', inset: 0, background: '#7b5cf6', transform: 'translateY(-110%)', pointerEvents: 'none' }} />
+      <span ref={labelRef} style={{ position: 'relative', zIndex: 10, transition: 'color 0.2s', color: '#fff' }}>
+        {muted ? 'Unmute' : 'Mute'}
+      </span>
+    </button>
+  )
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 function ytCmd(iframe, func, args = []) {
@@ -399,7 +451,7 @@ function stickyProgress() {
           {/* Col 2 — growing tile */}
           <div style={{
             alignSelf: 'start', position: 'sticky', top: 0,
-            height: '100vh', display: 'flex', alignItems: 'center',
+            height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             marginTop: `calc(-10vh - ${TILE_VW}vw)`, zIndex: 2,
           }}>
             <motion.div className="relative overflow-hidden w-full"
@@ -443,22 +495,12 @@ function stickyProgress() {
                 )}
               </AnimatePresence>
 
-              {/* Mute toggle — only visible when YouTube is showing */}
-              {scaled && (
-                <button
-                  onClick={toggleMute}
-                  style={{
-                    position: 'absolute', bottom: 16, left: 16, zIndex: 10,
-                    background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.3)',
-                    color: '#fff', borderRadius: 4, padding: '6px 12px',
-                    fontFamily: 'Raleway, sans-serif', fontSize: 13, fontWeight: 600,
-                    cursor: 'pointer', backdropFilter: 'blur(4px)',
-                  }}
-                >
-                  {muted ? '🔇 Unmute' : '🔊 Mute'}
-                </button>
-              )}
             </motion.div>
+
+            {/* Mute toggle — below video, ShardLink style */}
+            {scaled && (
+              <MuteButton muted={muted} onClick={toggleMute} />
+            )}
           </div>
 
         </div>
