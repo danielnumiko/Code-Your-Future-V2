@@ -157,7 +157,7 @@ function WatchButton({ onClick }) {
     shardRef.current.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
     shardRef.current.style.transform = 'translate(0,0)'
     btnRef.current.style.borderColor = '#7b5cf6'
-    labelRef.current.style.color = '#fff'
+    labelRef.current.style.color = '#000'
   }
   function leave(e) {
     const dir = getDir(e)
