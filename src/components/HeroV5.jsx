@@ -210,11 +210,10 @@ function stickyProgress() {
   })
 
   const playerReadyRef = useRef(false)
+  const [muted, setMuted] = useState(true)
 
   function playIfReady() {
     if (!playerReadyRef.current || !inViewRef.current) return
-    ytCmd(videoRef.current, 'unMute')
-    ytCmd(videoRef.current, 'setVolume', [100])
     ytCmd(videoRef.current, 'playVideo')
   }
 
@@ -234,7 +233,7 @@ function stickyProgress() {
     return () => window.removeEventListener('message', onMessage)
   }, [])
 
-  // Play/pause based on scroll visibility
+  // Play/pause based on scroll visibility — only pause when fully out of view
   useEffect(() => {
     const el = sectionRef.current
     if (!el) return
@@ -244,15 +243,26 @@ function stickyProgress() {
         if (entry.isIntersecting) {
           playIfReady()
         } else {
-          ytCmd(videoRef.current, 'mute')
           ytCmd(videoRef.current, 'pauseVideo')
+          setMuted(true)
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0 }
     )
     observer.observe(el)
     return () => observer.disconnect()
   }, [])
+
+  function toggleMute() {
+    if (muted) {
+      ytCmd(videoRef.current, 'unMute')
+      ytCmd(videoRef.current, 'setVolume', [100])
+      setMuted(false)
+    } else {
+      ytCmd(videoRef.current, 'mute')
+      setMuted(true)
+    }
+  }
 
   return (
     <div style={{ position: 'relative' }}>
@@ -432,6 +442,22 @@ function stickyProgress() {
                   />
                 )}
               </AnimatePresence>
+
+              {/* Mute toggle — only visible when YouTube is showing */}
+              {scaled && (
+                <button
+                  onClick={toggleMute}
+                  style={{
+                    position: 'absolute', bottom: 16, left: 16, zIndex: 10,
+                    background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.3)',
+                    color: '#fff', borderRadius: 4, padding: '6px 12px',
+                    fontFamily: 'Raleway, sans-serif', fontSize: 13, fontWeight: 600,
+                    cursor: 'pointer', backdropFilter: 'blur(4px)',
+                  }}
+                >
+                  {muted ? '🔇 Unmute' : '🔊 Mute'}
+                </button>
+              )}
             </motion.div>
           </div>
 
