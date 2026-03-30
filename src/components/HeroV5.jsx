@@ -478,13 +478,13 @@ function stickyProgress() {
                   }, 500)
                 }}
               />
-              {fullyScaled && !watching && (
-                <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 5 }}>
-                  <WatchButton onClick={handleWatch} />
-                </div>
-              )}
-
             </motion.div>
+
+            {fullyScaled && !watching && (
+              <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
+                <WatchButton onClick={handleWatch} />
+              </div>
+            )}
           </div>
 
         </div>
