@@ -92,32 +92,28 @@ function DragCarousel() {
 
 export default function PartnerLogos() {
   return (
-    <section className="bg-cyf-offwhite">
+    <section>
 
       {/* Quote block */}
-      <div className="max-w-viewport mx-auto px-margins pt-slice pb-2xl">
-        <div className="grid lg:grid-cols-[1fr_2fr] gap-xl items-start">
-          <FadeIn>
-            <div className="flex items-center gap-xs pt-2">
-              <EyebrowMark />
-              <p className="font-raleway font-medium text-cyf-black uppercase tracking-widest text-xs">
-                Our partners
-              </p>
-            </div>
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <blockquote>
-              <p className="font-raleway font-medium text-cyf-black text-h4 tracking-tight leading-tight mb-m">
-                "CYF graduates bring a work ethic and technical foundation that matches or exceeds
-                what we'd expect from expensive senior hires. They're not a compromise — they're an upgrade."
-              </p>
-              <footer>
-                <p className="font-raleway font-medium text-cyf-black text-base">Laura Carvajal</p>
-                <p className="font-raleway text-cyf-ink/60 text-s mt-2xs">Senior Principal Engineer</p>
-              </footer>
-            </blockquote>
-          </FadeIn>
-        </div>
+      <div className="max-w-viewport mx-auto px-margins pt-slice pb-2xl text-center">
+        <FadeIn>
+          <div className="flex items-center justify-center gap-xs mb-l">
+            <EyebrowMark />
+            <p className="font-raleway font-medium uppercase tracking-widest text-xs" style={{ color: 'inherit' }}>
+              Our partners
+            </p>
+          </div>
+          <blockquote className="max-w-3xl mx-auto">
+            <p className="font-raleway font-medium text-h4 tracking-tight leading-tight mb-m" style={{ color: 'inherit' }}>
+              "CYF graduates bring a work ethic and technical foundation that matches or exceeds
+              what we'd expect from expensive senior hires. They're not a compromise — they're an upgrade."
+            </p>
+            <footer>
+              <p className="font-raleway font-medium text-base" style={{ color: 'inherit' }}>Laura Carvajal</p>
+              <p className="font-raleway text-s mt-2xs" style={{ color: 'inherit', opacity: 0.5 }}>Senior Principal Engineer</p>
+            </footer>
+          </blockquote>
+        </FadeIn>
       </div>
 
       {/* Draggable auto-scroll logo carousel */}

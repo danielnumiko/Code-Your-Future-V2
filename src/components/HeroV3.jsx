@@ -1,68 +1,86 @@
 /**
- * HeroV3 — Concept 3. Volunteer.
+ * HeroV4 — Concept 4. Partner brand direction.
  *
- * Forked from HeroV4 (Train with us). Edit this file independently — changes
- * here will not affect HeroV4 and vice versa.
+ * Scroll mechanics: identical to V3 (clip, mosaic parallax, sticky tile peel, stats).
+ * Brand: red (#dc2627), double-chevron diamond logo mark, SVG brand-pattern tiles
+ * overlaid on the hero and mosaic. Each SVG path animates in with a diagonal stagger.
  */
 
 import { useRef, useEffect, useState } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform, animate } from 'framer-motion'
 import { TextRevealSegments } from './FadeIn'
+import ShardLink from './ShardLink'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const RED      = '#dc2627'
+const RED      = '#f26522'
+const PURPLE   = '#7b5cf6'
 const POSTER   = 'https://images.unsplash.com/photo-1671726203454-5d7a5370a9f4?auto=format&fit=crop&w=1920&q=85'
 const TILE_VW  = 10
 const CLIP_S   = 0.20
 const CLIP_E   = 0.55
 
-// ─── Shape data (from Figma) ──────────────────────────────────────────────────
+// ─── SVG path data ─────────────────────────────────────────────────────────────
+// All paths use a 174×174 viewBox. Derived from Frame25 (zigzag) and
+// Variant3 (union marks) Figma components.
 
-const SHAPES = {
-  chevronRight: {
-    viewBox: '0 0 175 175',
-    d: 'M175 98.2456L0 175V128.947L94.1351 87.193L0 43.5965V0L175 78.2895V98.2456Z',
-    flip: false,
-  },
-  chevronLeft: {
-    viewBox: '0 0 175 175',
-    d: 'M175 98.2456L0 175V128.947L94.1351 87.193L0 43.5965V0L175 78.2895V98.2456Z',
-    flip: true,
-  },
-  slash: {
-    viewBox: '0 0 175 175',
-    d: 'M175 0L44.0807 175H0L130.675 0H175Z',
-    flip: false,
-  },
-  curly: {
-    viewBox: '0 0 174.753 175',
-    d: 'M75 34.2871H56.667V70.5898C56.667 73.616 55.6668 76.4912 53.667 79.2148C51.667 81.7873 48.8886 84.1335 45.333 86.252C48.6662 88.219 51.333 90.6397 53.333 93.5146C55.5552 96.2384 56.667 99.038 56.667 101.913V140.713H75V175H24.333C22.7775 175 21.1107 174.546 19.333 173.638C17.5555 172.73 16.667 170.914 16.667 168.19V111.9C16.667 107.815 14.8886 104.41 11.333 101.687C7.99967 98.8115 4.22222 97.1463 0 96.6924V75.3564C3.11101 75.3564 5.88862 74.6 8.33301 73.0869C10.9996 71.4225 12.9997 69.4552 14.333 67.1855C15.8885 64.9159 16.6669 62.7219 16.667 60.6035V6.80957C16.667 3.93475 17.5555 2.11901 19.333 1.3623C21.3329 0.454467 22.9997 7.14257e-05 24.333 0H75V34.2871ZM150.204 0C151.325 0 152.894 0.454396 154.912 1.3623C156.93 2.11891 157.938 3.93454 157.938 6.80957V60.6035C157.939 62.7218 158.611 64.916 159.956 67.1855C161.525 69.4553 163.544 71.4224 166.01 73.0869C168.7 74.6 171.614 75.3564 174.753 75.3564V96.6924C170.269 97.1463 166.346 98.8115 162.983 101.687C159.621 104.41 157.938 107.815 157.938 111.9V168.19C157.938 170.914 156.93 172.73 154.912 173.638C153.119 174.546 151.549 175 150.204 175H98.7529V140.713H117.248V101.913C117.248 99.038 118.258 96.2384 120.275 93.5146C122.517 90.6397 125.432 88.219 129.019 86.252C125.432 84.1335 122.517 81.7873 120.275 79.2148C118.258 76.4912 117.248 73.6162 117.248 70.5898V34.2871H98.7529V0H150.204Z',
-    flip: false,
-  },
-}
+const ZIGZAG_PATHS = [
+  // Row 0 — right-pointing (>)
+  'M44 32.5614L0 58V42.7368L23.6682 28.8982L0 14.4491V0L44 25.9474V32.5614Z',
+  'M87 32.5614L44 58V42.7368L67.1303 28.8982L44 14.4491V0L87 25.9474V32.5614Z',
+  'M131 32.5614L87 58V42.7368L110.668 28.8982L87 14.4491V0L131 25.9474V32.5614Z',
+  'M174 32.5614L131 58V42.7368L154.13 28.8982L131 14.4491V0L174 25.9474V32.5614Z',
+  // Row 1 — left-pointing (<)
+  'M0 90.5614L44 116V100.737L20.3318 86.8982L44 72.4491V58L0 83.9474V90.5614Z',
+  'M44 90.5614L87 116V100.737L63.8697 86.8982L87 72.4491V58L44 83.9474V90.5614Z',
+  'M87 90.5614L131 116V100.737L107.332 86.8982L131 72.4491V58L87 83.9474V90.5614Z',
+  'M131 90.5614L174 116V100.737L150.87 86.8982L174 72.4491V58L131 83.9474V90.5614Z',
+  // Row 2 — right-pointing (>)
+  'M44 148.561L0 174V158.737L23.6682 144.898L0 130.449V116L44 141.947V148.561Z',
+  'M87 148.561L44 174V158.737L67.1303 144.898L44 130.449V116L87 141.947V148.561Z',
+  'M131 148.561L87 174V158.737L110.668 144.898L87 130.449V116L131 141.947V148.561Z',
+  'M174 148.561L131 174V158.737L154.13 144.898L131 130.449V116L174 141.947V148.561Z',
+]
+
+const UNION_PATHS = [
+  // Row 0
+  'M16.75 58H0L27.20 0H44L16.75 58Z',
+  'M59.75 58H43L70.20 0H87L59.75 58Z',
+  'M102.75 58H86L113.20 0H130L102.75 58Z',
+  'M145.75 58H129L156.20 0H173L145.75 58Z',
+  // Row 1 — col 3 is Slash
+  'M16.75 116H0L27.20 58H44L16.75 116Z',
+  'M59.75 116H43L70.20 58H87L59.75 116Z',
+  'M102.75 116H86L113.20 58H130L102.75 116Z',
+  'M173 58L145.75 116H129L156.20 58H173Z',
+  // Row 2 — col 3 is Slash
+  'M16.75 174H0L27.20 116H44L16.75 174Z',
+  'M59.75 174H43L70.20 116H87L59.75 174Z',
+  'M102.75 174H86L113.20 116H130L102.75 174Z',
+  'M173 116L145.75 174H129L156.20 116H173Z',
+]
 
 // ─── Tile data — all photo columns ────────────────────────────────────────────
 
 const COL_OUTER_L = [
   { src: 'https://images.unsplash.com/photo-1671726203454-5d7a5370a9f4?auto=format&fit=crop&w=800&q=85', alt: 'Student with dreadlocks at laptop' },
   { src: 'https://images.unsplash.com/photo-1573164713712-03790a178651?auto=format&fit=crop&w=800&q=85', alt: 'Student at laptop' },
-  { brandPattern: 'chevronLeft' },
+  { brandPattern: 'zigzag', flip: false, fill: RED },
 ]
 const COL_INNER_L = [
   { src: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=85', alt: 'Person studying on laptop' },
-  { brandPattern: 'slash' },
+  { brandPattern: 'union', flip: true, fill: PURPLE },
   { empty: true },
 ]
 const COL_INNER_R = [
-  { brandPattern: 'chevronRight' },
+  { brandPattern: 'zigzag', flip: true, fill: PURPLE },
   { src: 'https://images.unsplash.com/photo-1580894896813-652ff5aa8146?auto=format&fit=crop&w=800&q=85', alt: 'Woman coding at desk' },
   { src: 'https://images.unsplash.com/photo-1528901166007-3784c7dd3653?auto=format&fit=crop&w=800&q=85', alt: 'Student with laptop' },
 ]
 const COL_OUTER_R = [
   { src: 'https://images.unsplash.com/photo-1713946598544-c3d106930f72?auto=format&fit=crop&w=800&q=85', alt: 'Student at desk' },
   { src: 'https://images.unsplash.com/photo-1758270705317-3ef6142d306f?auto=format&fit=crop&w=800&q=85', alt: 'Students around a laptop' },
-  { brandPattern: 'curly' },
+  { brandPattern: 'union', flip: false, fill: RED },
 ]
 
 const STATS_DATA = [
@@ -92,27 +110,57 @@ function clamp(v, lo = 0, hi = 1) { return Math.min(hi, Math.max(lo, v)) }
 function easeSnappy(t) { return 1 - Math.pow(1 - clamp(t), 4) }
 
 // ─── BrandPatternTile ─────────────────────────────────────────────────────────
+// Renders an SVG brand-pattern tile. Each path fades in with a diagonal stagger.
+// flip=true applies scaleX(-1) — equivalent to Figma's rotate(180deg) scaleY(-1).
 
-function BrandPatternTile({ variant }) {
-  const shape = SHAPES[variant]
-  if (!shape) return null
+function BrandPatternTile({ variant, flip = false, fill = RED }) {
+  const paths = variant === 'zigzag' ? ZIGZAG_PATHS : UNION_PATHS
+  const viewBox = variant === 'zigzag' ? '0 0 174 182.7' : '0 0 174 174'
   return (
     <svg
-      viewBox={shape.viewBox}
+      viewBox={viewBox}
       width="100%" height="100%"
       overflow="visible"
-      style={{ display: 'block', transform: shape.flip ? 'scaleX(-1)' : 'none' }}
+      style={{ display: 'block', transform: flip ? 'scaleX(-1)' : 'none' }}
       aria-hidden="true"
     >
-      <motion.path
-        d={shape.d}
-        fill={RED}
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: '-20px' }}
-        transition={{ duration: 0.45, ease: 'easeOut' }}
-      />
+      {paths.map((d, i) => {
+        const row = Math.floor(i / 4)
+        const col = i % 4
+        const delay = (row + col) * 0.07
+        return (
+          <motion.path
+            key={i}
+            d={d}
+            fill={fill}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: '-20px' }}
+            transition={{ duration: 0.45, ease: 'easeOut', delay }}
+          />
+        )
+      })}
     </svg>
+  )
+}
+
+// ─── PatternOverlay ───────────────────────────────────────────────────────────
+// A positioned pattern tile container — used in both hero and mosaic overlays.
+
+function PatternOverlay({ variant, flip, style }) {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: 'absolute',
+        width: `${TILE_VW}vw`,
+        height: `${TILE_VW}vw`,
+        pointerEvents: 'none',
+        ...style,
+      }}
+    >
+      <BrandPatternTile variant={variant} flip={flip} />
+    </div>
   )
 }
 
@@ -128,7 +176,7 @@ function Tile({ item }) {
   if (item.brandPattern) {
     return (
       <div style={{ ...sz, position: 'relative' }}>
-        <BrandPatternTile variant={item.brandPattern} flip={item.flip} />
+        <BrandPatternTile variant={item.brandPattern} flip={item.flip} fill={item.fill} />
       </div>
     )
   }
@@ -165,7 +213,7 @@ function CountUp({ to, decimals = 0, suffix = '' }) {
         if (entry.isIntersecting && !hasRun.current) {
           hasRun.current = true
           animate(0, to, {
-            duration: 1.8,
+            duration: 0.9,
             ease: [0.16, 1, 0.3, 1],
             onUpdate: v => setValue(v),
           })
@@ -301,6 +349,8 @@ export default function HeroV3({ onSwitchConcept }) {
         <button style={navBtn} onClick={() => onSwitchConcept?.('v2')}>Concept 2</button>
         <span style={{ fontFamily: 'Raleway, sans-serif', fontWeight: 900, fontSize: 18, color: RED, lineHeight: 1 }}>/</span>
         <button style={navBtn} onClick={() => onSwitchConcept?.('v3')}>Concept 3</button>
+        <span style={{ fontFamily: 'Raleway, sans-serif', fontWeight: 900, fontSize: 18, color: RED, lineHeight: 1 }}>/</span>
+        <button style={navBtn} onClick={() => onSwitchConcept?.('v4')}>Concept 4</button>
       </div>
 
       {/* ================================================================
@@ -316,17 +366,16 @@ export default function HeroV3({ onSwitchConcept }) {
           <motion.div className="absolute inset-0" style={{ clipPath: videoClip, willChange: 'clip-path' }}>
             <motion.div className="absolute inset-0" style={{ scale: videoScale, willChange: 'transform' }}>
               <style>{`
-                @keyframes kenBurns3 {
+                @keyframes kenBurns4 {
                   0%   { transform: scale(1.08) translate(0%, 0%); }
                   100% { transform: scale(1.16) translate(-2%, -1.5%); }
                 }
-                .ken-burns-3 { animation: kenBurns3 18s ease-in-out infinite alternate; transform-origin: center center; }
+                .ken-burns-4 { animation: kenBurns4 18s ease-in-out infinite alternate; transform-origin: center center; }
               `}</style>
               <video
                 ref={videoRef}
                 autoPlay muted loop playsInline
-                className="absolute inset-0 w-full h-full object-cover ken-burns-3"
-                poster={POSTER}
+                className="absolute inset-0 w-full h-full object-cover ken-burns-4"
               >
                 <source src="/hero-video.mp4" type="video/mp4" />
               </video>
@@ -339,6 +388,14 @@ export default function HeroV3({ onSwitchConcept }) {
             className="absolute inset-0 pointer-events-none"
             style={{ opacity: heroOp, y: heroY, zIndex: 10 }}
           >
+            {/* Pattern tiles — right side, derived from Figma canvas 1728×1080
+                Tile 1: left=1380, top=558  → zigzag, flipped
+                Tile 2: left=1554, top=732  → union, flipped
+                Tile 3: left=1379, top=906  → union, not flipped */}
+            <PatternOverlay variant="zigzag" flip={true}  style={{ left: '79.9vw', bottom: '20vw' }} />
+            <PatternOverlay variant="union"  flip={true}  style={{ left: '89.9vw', bottom: '10vw' }} />
+            <PatternOverlay variant="union"  flip={false} style={{ left: '79.9vw', bottom: '0'    }} />
+
             <div style={{ position: 'absolute', left: 50, bottom: 50, maxWidth: '57.4vw' }}>
               <TextRevealSegments
                 as="p"
@@ -427,22 +484,10 @@ export default function HeroV3({ onSwitchConcept }) {
                 ]}
               />
               <div style={{ display: 'flex', gap: 10, alignItems: 'center', pointerEvents: 'auto' }}>
-                <a
-                  href="/partner"
-                  className="font-raleway font-semibold text-xs whitespace-nowrap"
-                  style={{ background: RED, color: '#fff', padding: '14px 24px', borderRadius: 0, display: 'inline-block', textDecoration: 'none' }}
-                >
-                  Partner with us
-                </a>
-                <a
-                  href="/apply"
-                  className="font-raleway font-semibold text-xs whitespace-nowrap"
-                  style={{ background: 'white', border: `2px solid ${RED}`, color: RED, padding: '12px 22px', borderRadius: 0, display: 'inline-block', textDecoration: 'none' }}
-                >
-                  Apply to train
-                </a>
+                <ShardLink href="/partner" filled>Partner with us</ShardLink>
+                <ShardLink href="/apply">Apply to train</ShardLink>
               </div>
-              {/* Central photo tile */}
+              {/* Central photo tile — similar to concept 2 */}
               <div style={{ width: `${TILE_VW}vw`, height: `${TILE_VW}vw`, overflow: 'hidden', pointerEvents: 'auto', flexShrink: 0, marginTop: 100 }}>
                 <img
                   src="https://images.unsplash.com/photo-1580894895938-bd31a62ed8ba?auto=format&fit=crop&w=800&q=85"
@@ -510,7 +555,7 @@ export default function HeroV3({ onSwitchConcept }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   onViewportEnter={() => setActiveStatIndex(i)}
                   viewport={{ once: false, margin: '-38% 0px -38% 0px' }}
-                  transition={{ duration: 0.65, ease: 'easeOut' }}
+                  transition={{ duration: 0.35, ease: 'easeOut' }}
                 >
                   <div style={{ paddingBottom: '8vh' }}>
                     <p

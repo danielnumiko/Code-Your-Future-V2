@@ -6,7 +6,7 @@ const navLinks = [
   { label: 'Concept 1', concept: 'v1' },
   { label: 'Concept 2', concept: 'v2' },
   { label: 'Concept 3', concept: 'v3' },
-  { label: 'About',         concept: 'v4' },
+  { label: 'Concept 4',     concept: 'v4' },
 ]
 
 export default function Nav({ onSwitchConcept, activeConcept }) {
@@ -50,7 +50,7 @@ export default function Nav({ onSwitchConcept, activeConcept }) {
           <nav className="hidden md:flex items-center gap-l" aria-label="Primary">
             {navLinks.map(link => {
               const baseClass = `font-raleway font-medium text-xs transition-colors duration-300`
-              const colorClass = 'text-cyf-black/70 hover:text-cyf-black'
+              const colorClass = 'text-cyf-black hover:text-cyf-black'
               return link.concept ? (
                 <button
                   key={link.concept}

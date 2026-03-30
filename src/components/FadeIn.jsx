@@ -168,12 +168,12 @@ export function GlitchHeading({ segments, style, className, as: Tag = 'p', delay
 
 // Numiko-style word-by-word staggered reveal for H1 / H2.
 // Each word fades + slides up independently with a short stagger.
-export function TextReveal({ children, as: Tag = 'h2', className = '', delay = 0, onMount = false }) {
+export function TextReveal({ children, as: Tag = 'h2', className = '', style, delay = 0, onMount = false }) {
   const words = String(children).split(' ')
   const vp = { once: true, margin: '-40px' }
 
   return (
-    <Tag className={className}>
+    <Tag className={className} style={style}>
       {words.map((word, i) => (
         <motion.span
           key={i}
@@ -196,33 +196,51 @@ export function TextReveal({ children, as: Tag = 'h2', className = '', delay = 0
 // segments = [{ text: string, color: string }, ...]
 // Use color: 'currentColor' to inherit the parent's CSS colour.
 export function TextRevealSegments({ segments, as: Tag = 'h2', className = '', style, delay = 0, onMount = false }) {
-  const tokens = segments.flatMap(seg =>
-    seg.text.split(/(\s+)/).filter(Boolean).map(part => ({ text: part, color: seg.color }))
+  const absLeft    = segments.filter(s => s.absolute === 'left')
+  const absRight   = segments.filter(s => s.absolute === 'right')
+  const inlineSegs = segments.filter(s => !s.absolute)
+
+  const tokens = inlineSegs.flatMap(seg =>
+    seg.break
+      ? [{ break: true }]
+      : seg.text.split(/(\s+)/).filter(Boolean).map(part => ({ text: part, color: seg.color }))
   )
+
+  const totalWords = tokens.filter(t => !t.break && t.text?.trim()).length
   const vp = { once: true, margin: '-40px' }
   let wordIdx = 0
+
+  const anim = (idx) => ({
+    initial: { y: 20, opacity: 0 },
+    ...(onMount
+      ? { animate: { y: 0, opacity: 1 } }
+      : { whileInView: { y: 0, opacity: 1 }, viewport: vp }
+    ),
+    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: delay + idx * 0.05 },
+  })
 
   return (
     <Tag className={className} style={style}>
       {tokens.map((token, i) => {
+        if (token.break) return <br key={i} />
         const isSpace = !token.text.trim()
-        if (isSpace) {
-          return <span key={i} aria-hidden="true">{token.text}</span>
-        }
+        if (isSpace) return <span key={i} aria-hidden="true">{token.text}</span>
         const idx = wordIdx++
+        const isFirst = idx === 0
+        const isLast  = idx === totalWords - 1
         return (
-          <motion.span
-            key={i}
-            className="inline-block"
-            style={{ color: token.color }}
-            initial={{ y: 20, opacity: 0 }}
-            {...(onMount
-              ? { animate: { y: 0, opacity: 1 } }
-              : { whileInView: { y: 0, opacity: 1 }, viewport: vp }
-            )}
-            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: delay + idx * 0.05 }}
-          >
+          <motion.span key={i} className="inline-block" style={{ color: token.color, position: 'relative' }} {...anim(idx)}>
+            {isFirst && absLeft.map((seg, j) => (
+              <span key={j} aria-hidden="true" style={{ position: 'absolute', right: '100%', color: seg.color, whiteSpace: 'nowrap', paddingRight: '0.1em' }}>
+                {seg.text}
+              </span>
+            ))}
             {token.text}
+            {isLast && absRight.map((seg, j) => (
+              <span key={j} aria-hidden="true" style={{ position: 'absolute', left: '100%', color: seg.color, whiteSpace: 'nowrap', paddingLeft: '0.1em' }}>
+                {seg.text}
+              </span>
+            ))}
           </motion.span>
         )
       })}

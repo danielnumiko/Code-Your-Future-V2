@@ -373,6 +373,8 @@ export default function HeroV1({ onSwitchConcept }) {
         <button style={navBtn} onClick={() => onSwitchConcept?.('v2')}>Concept 2</button>
         <span style={{ fontFamily: 'Raleway, sans-serif', fontWeight: 900, fontSize: 18, color: GREEN, lineHeight: 1 }}>/</span>
         <button style={navBtn} onClick={() => onSwitchConcept?.('v3')}>Concept 3</button>
+        <span style={{ fontFamily: 'Raleway, sans-serif', fontWeight: 900, fontSize: 18, color: GREEN, lineHeight: 1 }}>/</span>
+        <button style={navBtn} onClick={() => onSwitchConcept?.('v4')}>Concept 4</button>
       </div>
 
       {/* ================================================================
