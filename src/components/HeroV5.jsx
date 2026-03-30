@@ -264,8 +264,14 @@ function stickyProgress() {
 
   useMotionValueEvent(mosaic, 'change', v => {
     const s = stickyProgress()
+    const t = easeSnappy(clamp((v - s) / (1 - s)))
     setScaled(v >= s)
-    setFullyScaled(easeSnappy(clamp((v - s) / (1 - s))) >= 0.97)
+    setFullyScaled(t >= 0.97)
+    if (t < 0.05 && watchingRef.current) {
+      watchingRef.current = false
+      playerReadyRef.current = false
+      setWatching(false)
+    }
   })
 
   const playerReadyRef = useRef(false)
