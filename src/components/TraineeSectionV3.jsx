@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion'
 import { FadeIn, TextReveal, EyebrowMark } from './FadeIn'
-import { RED, BrandIcon } from './BrandAssetsV4'
+import { BrandIcon } from './BrandAssetsV4'
+import ShardLink from './ShardLink'
+const RED = '#f26522'
 
 const journey = [
   {
@@ -57,14 +59,9 @@ export default function TraineeSectionV3() {
             </TextReveal>
             <nav className="flex items-center gap-s" aria-label="Trainee links">
               {ctaLinks.map(link => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="font-raleway font-semibold text-xs whitespace-nowrap transition-colors"
-                  style={{ border: `2px solid ${RED}`, color: RED, padding: '12px 22px', borderRadius: 0, display: 'inline-block' }}
-                >
+                <ShardLink key={link.href} href={link.href} filled={link.filled}>
                   {link.label}
-                </a>
+                </ShardLink>
               ))}
             </nav>
           </FadeIn>
@@ -83,7 +80,7 @@ export default function TraineeSectionV3() {
               transition={{ duration: 0.5, ease: 'easeOut', delay: i * 0.1 }}
             >
               <div className="mb-l">
-                <BrandIcon index={i} inViewDelay={i * 0.1} />
+                <BrandIcon index={i} inViewDelay={i * 0.1} fill={i % 2 === 0 ? RED : "#7b5cf6"} />
               </div>
               <h3 className="font-raleway font-medium text-cyf-black text-h5 leading-snug mb-s">
                 {step.name}

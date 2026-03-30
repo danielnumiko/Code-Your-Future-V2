@@ -1,5 +1,6 @@
-import { RED, DiamondMark } from './BrandAssetsV4'
+import { DiamondMark } from './BrandAssetsV4'
 import { TextRevealSegments } from './FadeIn'
+const RED = '#f26522'
 
 const footerSections = [
   {
@@ -40,8 +41,8 @@ const footerSections = [
 export default function FooterV3() {
   return (
     <footer
-      className="fixed bottom-0 left-0 right-0 bg-cyf-black text-white flex flex-col"
-      style={{ height: '100vh', zIndex: 0, position: 'fixed' }}
+      
+      className="fixed bottom-0 left-0 right-0 text-white flex flex-col" style={{ background: "#7b5cf6", height: "100vh", zIndex: 0, position: "fixed" }}
     >
       <div className="max-w-viewport mx-auto px-margins w-full h-full flex flex-col">
 
@@ -96,7 +97,7 @@ export default function FooterV3() {
         {/* Bottom bar — DiamondMark + wordmark */}
         <div className="border-t border-white/10 py-s flex flex-col sm:flex-row items-center justify-between gap-s">
           <a href="/" aria-label="Code Your Future home" className="inline-flex items-center gap-3">
-            <DiamondMark width={24} />
+            <DiamondMark width={24} fill={RED} />
             <span className="font-raleway font-bold text-white tracking-tight" style={{ fontSize: '1.15rem' }}>
               Code Your Future
             </span>

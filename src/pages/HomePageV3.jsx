@@ -1,7 +1,7 @@
 import HeroV3 from '../components/HeroV3'
 import PipelineStrategyV3 from '../components/PipelineStrategyV3'
 import PartnerLogos from '../components/PartnerLogos'
-import TestimonialCarousel from '../components/TestimonialCarousel'
+import TestimonialCarouselV3 from '../components/TestimonialCarouselV3'
 import TraineeSectionV3 from '../components/TraineeSectionV3'
 import BlogPreviewV3 from '../components/BlogPreviewV3'
 import NewsletterV3 from '../components/NewsletterV3'
@@ -17,7 +17,7 @@ export default function HomePageV3({ onSwitchConcept, activeConcept }) {
           <PipelineStrategyV3 />
           <PartnerLogos />
           <TraineeSectionV3 />
-          <TestimonialCarousel />
+          <TestimonialCarouselV3 />
           <BlogPreviewV3 />
           <NewsletterV3 />
         </main>

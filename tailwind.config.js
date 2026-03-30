@@ -26,6 +26,7 @@ export default {
       fontFamily: {
         raleway: ['"Raleway"', 'sans-serif'],
         lato:    ['"Lato"', 'sans-serif'],
+        bebas:   ['"Bebas Neue"', 'sans-serif'],
       },
 
       // Fluid type scale — increased for bolder visual hierarchy
@@ -45,7 +46,7 @@ export default {
         // h3   32px → 68px
         'h3':      ['clamp(2rem, calc(1.55rem + 2.25vw), 4.25rem)',            { lineHeight: '1.1' }],
         // h2   40px → 88px
-        'h2':      ['clamp(2.5rem, calc(1.9rem + 3vw), 5.5rem)',               { lineHeight: '1.05' }],
+        'h2':      ['clamp(3.5rem, calc(2rem + 6vw), 9rem)',                   { lineHeight: '1.05' }],
         // display 52px → 120px (hero)
         'display': ['clamp(3.25rem, calc(2.4rem + 4.25vw), 7.5rem)',           { lineHeight: '1.0' }],
       },

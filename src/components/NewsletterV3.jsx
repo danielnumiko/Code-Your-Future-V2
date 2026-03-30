@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion'
 import { FadeIn, TextRevealSegments } from './FadeIn'
-import { RED } from './BrandAssetsV4'
+import ShardLink from './ShardLink'
+const RED = '#f26522'
+
 
 export default function NewsletterV3() {
   return (
@@ -38,20 +40,8 @@ export default function NewsletterV3() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-s justify-center">
-            <a
-              href="/partner"
-              className="font-raleway font-semibold text-xs whitespace-nowrap transition-colors"
-              style={{ background: RED, color: '#fff', padding: '14px 24px', borderRadius: 0, display: 'inline-block' }}
-            >
-              Partner with us
-            </a>
-            <a
-              href="/train"
-              className="font-raleway font-semibold text-xs whitespace-nowrap transition-colors"
-              style={{ background: 'transparent', border: `2px solid ${RED}`, color: RED, padding: '12px 22px', borderRadius: 0, display: 'inline-block' }}
-            >
-              Apply to train
-            </a>
+            <ShardLink href="/partner" filled>Partner with us</ShardLink>
+            <ShardLink href="/train">Apply to train</ShardLink>
           </div>
         </FadeIn>
       </div>

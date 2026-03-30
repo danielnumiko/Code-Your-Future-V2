@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FadeIn, TextReveal } from './FadeIn'
-import { RED, BrandDev } from './BrandAssetsV4'
+import { BrandDev } from './BrandAssetsV4'
+const RED = '#f26522'
 
 const posts = [
   {
@@ -38,8 +39,7 @@ export default function BlogPreviewV3() {
 
   return (
     <section className="bg-cyf-offwhite overflow-hidden relative">
-      <BrandDev variant="zigzag" size={99} style={{ right: 0, top: 60, zIndex: 1 }} />
-      <div className="max-w-viewport mx-auto px-margins pt-slice pb-s">
+<div className="max-w-viewport mx-auto px-margins pt-slice pb-s">
 
         <FadeIn className="mb-l">
           <TextReveal className="font-raleway font-medium text-cyf-black text-h2 tracking-tight mb-l" delay={0.05}>

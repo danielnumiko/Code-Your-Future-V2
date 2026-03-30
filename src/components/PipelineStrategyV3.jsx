@@ -1,7 +1,9 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { FadeIn, EyebrowMark, TextRevealSegments } from './FadeIn'
-import { RED } from './BrandAssetsV4'
+import ShardLink from './ShardLink'
+const RED = '#f26522'
+
 
 const steps = [
   {
@@ -130,18 +132,9 @@ export default function PipelineStrategyV3() {
         {/* CTAs */}
         <FadeIn className="flex flex-col sm:flex-row items-center justify-center gap-s pt-2xl">
           {ctaLinks.map(link => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="font-raleway font-semibold text-xs whitespace-nowrap transition-colors"
-              style={
-                link.filled
-                  ? { background: RED, color: '#fff', padding: '14px 24px', borderRadius: 0, display: 'inline-block' }
-                  : { background: 'transparent', border: `2px solid ${RED}`, color: RED, padding: '12px 22px', borderRadius: 0, display: 'inline-block' }
-              }
-            >
+            <ShardLink key={link.href} href={link.href} filled={link.filled}>
               {link.label}
-            </a>
+            </ShardLink>
           ))}
         </FadeIn>
 
