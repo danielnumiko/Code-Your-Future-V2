@@ -209,7 +209,32 @@ function stickyProgress() {
     setScaled(v >= s)
   })
 
-  // Play with sound when section scrolls into view, pause when it leaves
+  const playerReadyRef = useRef(false)
+
+  function playIfReady() {
+    if (!playerReadyRef.current || !inViewRef.current) return
+    ytCmd(videoRef.current, 'unMute')
+    ytCmd(videoRef.current, 'setVolume', [100])
+    ytCmd(videoRef.current, 'playVideo')
+  }
+
+  // Listen for YouTube player ready event
+  useEffect(() => {
+    function onMessage(e) {
+      if (e.origin !== 'https://www.youtube.com') return
+      try {
+        const data = JSON.parse(e.data)
+        if (data.event === 'onReady') {
+          playerReadyRef.current = true
+          playIfReady()
+        }
+      } catch {}
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [])
+
+  // Play/pause based on scroll visibility
   useEffect(() => {
     const el = sectionRef.current
     if (!el) return
@@ -217,28 +242,17 @@ function stickyProgress() {
       ([entry]) => {
         inViewRef.current = entry.isIntersecting
         if (entry.isIntersecting) {
-          ytCmd(videoRef.current, 'unMute')
-          ytCmd(videoRef.current, 'setVolume', [100])
-          ytCmd(videoRef.current, 'playVideo')
+          playIfReady()
         } else {
           ytCmd(videoRef.current, 'mute')
           ytCmd(videoRef.current, 'pauseVideo')
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     )
     observer.observe(el)
     return () => observer.disconnect()
   }, [])
-
-  // When iframe loads while section is already in view, start playing
-  function onVideoLoad() {
-    if (inViewRef.current) {
-      ytCmd(videoRef.current, 'unMute')
-      ytCmd(videoRef.current, 'setVolume', [100])
-      ytCmd(videoRef.current, 'playVideo')
-    }
-  }
 
   return (
     <div style={{ position: 'relative' }}>
@@ -397,12 +411,20 @@ function stickyProgress() {
                   <motion.iframe
                     key="youtube"
                     ref={videoRef}
-                    src={`https://www.youtube.com/embed/jz87O1kap7s?autoplay=1&mute=1&loop=1&playlist=jz87O1kap7s&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&origin=${encodeURIComponent(window.location.origin)}`}
+                    src={`https://www.youtube.com/embed/jz87O1kap7s?autoplay=1&mute=1&loop=1&playlist=jz87O1kap7s&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&origin=${encodeURIComponent(window.location.origin)}&enablejsapi=1`}
                     className="absolute inset-0 w-full h-full"
                     style={{ border: 'none' }}
                     allow="autoplay; encrypted-media"
                     allowFullScreen
-                    onLoad={onVideoLoad}
+                    onLoad={() => {
+                      // Ask YouTube to send onReady event so we know when to send commands
+                      setTimeout(() => {
+                        videoRef.current?.contentWindow?.postMessage(
+                          JSON.stringify({ event: 'listening' }),
+                          'https://www.youtube.com'
+                        )
+                      }, 500)
+                    }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
