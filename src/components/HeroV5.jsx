@@ -185,7 +185,7 @@ function WatchButton({ onClick }) {
         <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor" style={{ flexShrink: 0 }}>
           <path d="M0 0L10 6L0 12V0Z" />
         </svg>
-        why code your future
+        Why Code Your Future?
       </span>
     </button>
   )
