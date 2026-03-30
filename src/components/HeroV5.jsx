@@ -417,7 +417,7 @@ function stickyProgress() {
               }}
               segments={[
                 { text: '<',  color: RED, absolute: 'left' },
-                { text: 'Future-proof your engineering team.', color: '#ffffff' },
+                { text: 'Future-proof your engineering team', color: '#ffffff' },
                 { text: '/>', color: RED, absolute: 'right' },
               ]}
             />
