@@ -17,7 +17,7 @@ const WHITE    = '#ffffff'
 const FG_LIGHT = '#ffffff'
 const FG_DARK  = '#1a1a1a'
 const PAT_DARK  = '#7b5cf6'  // purple on dark backgrounds
-const PAT_LIGHT = '#130022'  // dark blue on light backgrounds
+const PAT_LIGHT = '#7b5cf6'  // purple on light backgrounds
 const ROLL_DARK  = '#a78bfa'  // soft purple rollover on dark bg
 const ROLL_LIGHT = '#4c1d95'  // dark purple rollover on light bg
 
