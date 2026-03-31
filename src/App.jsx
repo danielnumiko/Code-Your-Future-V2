@@ -1,7 +1,7 @@
-import HomePageV4 from './pages/HomePageV4'
+import HomePage from './pages/HomePage'
 
 function App() {
-  return <HomePageV4 />
+  return <HomePage />
 }
 
 export default App

@@ -1,6 +1,8 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { FadeIn, TextReveal, EyebrowMark } from './FadeIn'
+import { FadeIn, EyebrowMark, TextRevealSegments } from './FadeIn'
+import ShardLink from './ShardLink'
+const RED = '#F94500'
 
 
 const steps = [
@@ -17,27 +19,21 @@ const steps = [
     imageAlt: 'Student at desk',
   },
   {
-    title: 'Advance to intermediate within six months',
-    body: 'Our graduates consistently exceed expectations. Companies report faster growth than typical junior hires — reducing your time-to-value.',
+    title: 'Faster growth. Better retention.',
+    body: 'Our graduates consistently advance to intermediate within six months. Companies report stronger loyalty and faster time-to-value than typical junior hires.',
     image: 'https://images.unsplash.com/photo-1758270705317-3ef6142d306f?auto=format&fit=crop&w=800&q=85',
     imageAlt: 'Students around a laptop',
   },
 ]
 
 const ctaLinks = [
-  { label: 'Partner with us',    href: '/partner',             filled: true },
-  { label: 'Book a hiring call', href: '/partner#hiring-chat', filled: false },
+  { label: 'Partner with us',    href: '/partner',          filled: true },
+  { label: 'Book a hiring chat', href: '/partner#hiring',   filled: false },
 ]
 
 export default function PipelineStrategy() {
   const lineRef = useRef(null)
 
-  // Drive the line height directly from scroll position.
-  // Starts growing when the line container enters the viewport from the bottom,
-  // finishes when the bottom of the container reaches 80% down the viewport.
-  // Start when the container top reaches 50% down the viewport (so the line
-  // arrives at each square just before it hits centre-screen).
-  // Stop output at 88% so the line ends just above the buttons.
   const { scrollYProgress } = useScroll({
     target: lineRef,
     offset: ['start 65%', 'end 70%'],
@@ -45,49 +41,47 @@ export default function PipelineStrategy() {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
 
   return (
-    <section className="bg-cyf-offwhite">
+    <section className="relative overflow-hidden">
       <div className="max-w-viewport mx-auto px-margins pt-slice pb-slice">
 
-        {/* ── Header ─────────────────────────────────────────────────── */}
         <FadeIn className="text-center mb-2xl">
           <div className="flex items-center justify-center gap-xs mb-l">
-            <EyebrowMark />
-            <p className="font-raleway font-medium text-cyf-black uppercase tracking-widest text-xs">
-              For employers
+            <EyebrowMark fill={RED} />
+            <p className="font-raleway font-medium uppercase tracking-widest text-xs" style={{ color: 'inherit' }}>
+              For partners
             </p>
           </div>
-          <TextReveal
-            className="font-raleway font-medium text-cyf-black text-h3 tracking-tight leading-tight mb-l max-w-xl mx-auto"
-            delay={0.1}
-          >
-            The tech talent pipeline you've been missing.
-          </TextReveal>
-          <p className="font-raleway text-cyf-ink text-base leading-relaxed max-w-xl mx-auto">
-            Companies avoiding junior hires are creating a talent cliff. When your seniors move on,
-            who fills those roles? CYF graduates are production-ready, deeply loyal,
-            and advance to intermediate within six months.
+          <TextRevealSegments
+            className="font-bebas mb-l mx-auto"
+            style={{ fontSize: 'clamp(3.5rem, 7vw, 10rem)', lineHeight: 1.0, maxWidth: '55vw', width: 900, color: 'inherit' }}
+            segments={[
+              { text: '<',  color: RED, absolute: 'left' },
+              { text: "The tech talent pipeline you've been missing", color: 'currentColor' },
+              { text: '/>', color: RED, absolute: 'right' },
+            ]}
+          />
+          <p className="font-raleway text-base leading-relaxed max-w-xl mx-auto" style={{ color: 'inherit', opacity: 0.7 }}>
+            Junior hiring isn't a risk — it's a strategy. CYF graduates are production-ready,
+            deeply loyal, and advance to intermediate within six months.
           </p>
         </FadeIn>
 
-        {/* ── Line + items ───────────────────────────────────────────── */}
-        {/* The red line animates downward through all three items        */}
-        {/* and terminates at the CTA buttons below.                     */}
         <div ref={lineRef} className="relative">
 
-          {/* Animated line — spans full height of this container */}
+          {/* Animated line — red */}
           <motion.div
-            className="absolute bg-cyf-red pointer-events-none"
+            className="absolute pointer-events-none"
             style={{
               left: '50%',
               top: 0,
-              width: 2,
-              marginLeft: -1,
+              width: 4,
+              marginLeft: -2,
               height: lineHeight,
+              background: RED,
             }}
             aria-hidden="true"
           />
 
-          {/* Three items — alternating left / right of the line */}
           {steps.map((step, i) => {
             const imageLeft = i % 2 === 0
             return (
@@ -99,76 +93,52 @@ export default function PipelineStrategy() {
                 viewport={{ once: true, margin: '-80px' }}
                 transition={{ duration: 0.65, ease: 'easeOut' }}
               >
-                {/* Left column */}
                 <div className="w-full">
                   {imageLeft ? (
-                    <img
-                      src={step.image}
-                      alt={step.imageAlt}
-                      className="w-full aspect-[4/3] object-cover"
-                    />
+                    <img src={step.image} alt={step.imageAlt} className="w-full aspect-[4/3] object-cover" />
                   ) : (
                     <div>
-                      <p className="font-raleway font-medium text-cyf-red text-h3 leading-none mb-s">
+                      <p className="font-bebas text-h3 leading-none mb-s" style={{ color: RED }}>
                         {String(i + 1).padStart(2, '0')}
                       </p>
-                      <h3 className="font-raleway font-medium text-cyf-black text-h5 leading-snug mb-s">
-                        {step.title}
-                      </h3>
-                      <p className="font-raleway text-cyf-ink text-base leading-relaxed">
-                        {step.body}
-                      </p>
+                      <h3 className="font-bebas mb-s" style={{ fontSize: 'clamp(2.5rem, 3.5vw, 5rem)', lineHeight: 1, color: 'inherit' }}>{step.title}</h3>
+                      <p className="font-raleway text-base leading-relaxed" style={{ color: 'inherit', opacity: 0.7 }}>{step.body}</p>
                     </div>
                   )}
                 </div>
 
-                {/* Centre — square node on the line */}
+                {/* Centre dot — red */}
                 <div className="flex justify-center">
-                  <div className="w-4 h-4 bg-cyf-red shrink-0" aria-hidden="true" />
+                  <div className="w-4 h-4 shrink-0" style={{ background: RED }} aria-hidden="true" />
                 </div>
 
-                {/* Right column */}
                 <div className="w-full">
                   {imageLeft ? (
                     <div>
-                      <p className="font-raleway font-medium text-cyf-red text-h3 leading-none mb-s">
+                      <p className="font-bebas text-h3 leading-none mb-s" style={{ color: RED }}>
                         {String(i + 1).padStart(2, '0')}
                       </p>
-                      <h3 className="font-raleway font-medium text-cyf-black text-h5 leading-snug mb-s">
-                        {step.title}
-                      </h3>
-                      <p className="font-raleway text-cyf-ink text-base leading-relaxed">
-                        {step.body}
-                      </p>
+                      <h3 className="font-bebas mb-s" style={{ fontSize: 'clamp(2.5rem, 3.5vw, 5rem)', lineHeight: 1, color: 'inherit' }}>{step.title}</h3>
+                      <p className="font-raleway text-base leading-relaxed" style={{ color: 'inherit', opacity: 0.7 }}>{step.body}</p>
                     </div>
                   ) : (
-                    <img
-                      src={step.image}
-                      alt={step.imageAlt}
-                      className="w-full aspect-[4/3] object-cover"
-                    />
+                    <img src={step.image} alt={step.imageAlt} className="w-full aspect-[4/3] object-cover" />
                   )}
                 </div>
               </motion.div>
             )
           })}
-
         </div>
 
-        {/* CTAs — sit below the line container so the line ends right at them */}
+        {/* CTAs */}
         <FadeIn className="flex flex-col sm:flex-row items-center justify-center gap-s pt-2xl">
           {ctaLinks.map(link => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={
-                link.filled
-                  ? 'font-raleway font-medium text-xs text-white bg-cyf-red px-m py-s hover:bg-red-600 transition-colors whitespace-nowrap'
-                  : 'font-raleway font-medium text-xs text-cyf-red border border-cyf-red px-m py-s hover:bg-cyf-red hover:text-white transition-colors whitespace-nowrap'
-              }
-            >
+            <ShardLink key={link.href} href={link.href} filled={link.filled}
+              style={link.filled
+              ? { background: 'var(--page-fg)', color: 'var(--page-inv)', borderColor: 'var(--page-fg)' }
+              : { borderColor: 'currentColor', color: 'inherit' }}>
               {link.label}
-            </a>
+            </ShardLink>
           ))}
         </FadeIn>
 

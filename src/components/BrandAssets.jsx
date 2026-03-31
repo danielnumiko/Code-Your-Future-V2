@@ -1,4 +1,4 @@
-// BrandAssetsV4.jsx — shared brand primitives for all Concept 4 sections.
+// BrandAssets.jsx — shared brand primitives
 // Import what you need: RED, BrandDev, DiamondMark, BrandIcon.
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
@@ -7,7 +7,7 @@ export const RED   = '#dc2627'
 export const GREEN = '#40d584'
 
 // ─── SVG path data ────────────────────────────────────────────────────────────
-// viewBox 0 0 174 174 — same grid used in HeroV4 mosaic tiles.
+// viewBox 0 0 174 174 — same grid used in Hero mosaic tiles.
 
 export const ZIGZAG_PATHS = [
   // Row 0 — right-pointing (>)

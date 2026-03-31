@@ -1,3 +1,7 @@
+import { DiamondMark } from './BrandAssets'
+import { TextRevealSegments } from './FadeIn'
+const RED = '#F94500'
+
 const footerSections = [
   {
     heading: 'Train with us',
@@ -37,15 +41,32 @@ const footerSections = [
 export default function Footer() {
   return (
     <footer
-      className="fixed bottom-0 left-0 right-0 bg-cyf-black text-white flex flex-col"
-      style={{ height: '100vh', zIndex: 0 }}
+      className="fixed bottom-0 left-0 right-0 text-white flex flex-col" style={{ background: "#130022", height: "100vh", zIndex: 0, position: "fixed" }}
     >
       <div className="max-w-viewport mx-auto px-margins w-full h-full flex flex-col">
 
-        {/* Large CTA — top of footer, revealed last as content scrolls away */}
+        {/* Large CTA — top of footer */}
         <div className="flex-1 flex items-center py-2xl">
-          <h2 className="font-raleway font-medium text-white leading-none tracking-tighter text-display">
-            Code Your<br />Future.
+          <h2 className="font-bebas text-white leading-none text-display">
+            <TextRevealSegments
+              as="span"
+              className="block"
+              onMount={true}
+              segments={[
+                { text: '<',  color: RED, absolute: 'left' },
+                { text: 'Code Your', color: 'white' },
+              ]}
+            />
+            <TextRevealSegments
+              as="span"
+              className="block"
+              onMount={true}
+              delay={0.15}
+              segments={[
+                { text: 'Future', color: 'white' },
+                { text: '/>', color: RED, absolute: 'right' },
+              ]}
+            />
           </h2>
         </div>
 
@@ -72,14 +93,11 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Bottom bar — revealed first as you scroll in */}
+        {/* Bottom bar — DiamondMark + wordmark */}
         <div className="border-t border-white/10 py-s flex flex-col sm:flex-row items-center justify-between gap-s">
-          <a href="/" aria-label="Code Your Future home" className="inline-flex items-center gap-2">
-            <svg width="24" height="22" viewBox="0 0 424.264 384.527" aria-hidden="true">
-              <path fill="#EE4344" d="M424.264 192.264L232 384.527V285.532L325.27 192.264L232 98.9941V0L424.264 192.264Z" />
-              <path fill="#EE4344" d="M0 192.264L192 384.264V285.269L98.9941 192.264L192 99.2578V0.263672L0 192.264Z" />
-            </svg>
-            <span className="font-raleway font-bold text-white tracking-tight" style={{ fontSize: '1.15rem' }}>
+          <a href="/" aria-label="Code Your Future home" className="inline-flex items-center gap-3">
+            <DiamondMark width={24} fill={RED} />
+            <span className="font-bebas text-white" style={{ fontSize: '1.4rem', lineHeight: 1 }}>
               Code Your Future
             </span>
           </a>

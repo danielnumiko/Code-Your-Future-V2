@@ -34,15 +34,15 @@ export default function TestimonialCarousel() {
   const next = () => setActiveIndex(i => (i + 1) % testimonials.length)
 
   return (
-    <section className="bg-neutral-800">
+    <section>
       <div className="max-w-viewport mx-auto px-margins py-slice grid lg:grid-cols-2 gap-2xl items-center">
 
         {/* Left: quote + controls */}
         <div className="flex flex-col justify-center">
 
-          <div className="flex items-center gap-xs mb-xl">
-            <EyebrowMark fill="white" />
-            <p className="font-raleway font-medium text-white uppercase tracking-widest text-xs">
+          <div className="flex items-center justify-center gap-xs mb-xl">
+            <EyebrowMark fill="#F94500" />
+            <p className="font-raleway font-medium uppercase tracking-widest text-xs" style={{ color: 'inherit' }}>
               From our graduates
             </p>
           </div>
@@ -53,9 +53,10 @@ export default function TestimonialCarousel() {
               key={activeIndex}
               exit={{ opacity: 0, transition: { duration: 0.25 } }}
             >
-              <blockquote>
+              <blockquote className="text-center">
                 <motion.p
-                  className="font-raleway font-medium text-white text-h4 tracking-tight leading-tight mb-l"
+                  className="font-raleway font-medium text-h4 tracking-tight leading-tight mb-l"
+                  style={{ color: 'inherit' }}
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.55, ease: 'easeOut' }}
@@ -63,23 +64,27 @@ export default function TestimonialCarousel() {
                   {`"${t.quote}"`}
                 </motion.p>
                 <motion.footer
+                  className="flex flex-col items-center gap-2xs"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
                 >
-                  <p className="font-raleway font-medium text-white text-base">{t.name}</p>
-                  <p className="font-raleway text-white/50 text-s mt-2xs">{t.role}</p>
+                  <p className="font-raleway font-medium text-base" style={{ color: 'inherit' }}>{t.name}</p>
+                  <p className="font-raleway text-s" style={{ color: 'inherit', opacity: 0.5 }}>{t.role}</p>
                 </motion.footer>
               </blockquote>
             </motion.div>
           </AnimatePresence>
 
           {/* Controls — prev/next + progress indicators */}
-          <div className="flex items-center gap-s mt-xl">
+          <div className="flex items-center justify-center gap-s mt-xl">
             <button
               onClick={prev}
               aria-label="Previous testimonial"
-              className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:border-white transition-colors"
+              className="w-10 h-10 flex items-center justify-center transition-colors"
+              style={{ border: '1px solid currentColor', opacity: 0.4 }}
+              onMouseEnter={e => e.currentTarget.style.opacity = '1'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '0.4'}
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -88,7 +93,10 @@ export default function TestimonialCarousel() {
             <button
               onClick={next}
               aria-label="Next testimonial"
-              className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:border-white transition-colors"
+              className="w-10 h-10 flex items-center justify-center transition-colors"
+              style={{ border: '1px solid currentColor', opacity: 0.4 }}
+              onMouseEnter={e => e.currentTarget.style.opacity = '1'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '0.4'}
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -104,10 +112,10 @@ export default function TestimonialCarousel() {
                   className="flex items-center py-3 px-1"
                 >
                   <motion.div
-                    className="h-px rounded-full"
+                    className="h-px rounded-full bg-current"
                     animate={{
                       width: i === activeIndex ? 40 : 16,
-                      backgroundColor: i === activeIndex ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.25)',
+                      opacity: i === activeIndex ? 1 : 0.25,
                     }}
                     transition={{ duration: 0.35, ease: 'easeOut' }}
                   />
@@ -115,7 +123,7 @@ export default function TestimonialCarousel() {
               ))}
             </div>
 
-            <p className="font-raleway text-white/30 text-xs ml-s">
+            <p className="font-raleway text-xs ml-s" style={{ color: 'inherit', opacity: 0.3 }}>
               {activeIndex + 1} / {testimonials.length}
             </p>
           </div>
