@@ -157,14 +157,14 @@ function WatchButton({ onClick }) {
     shardRef.current.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
     shardRef.current.style.transform = 'translate(0,0)'
     btnRef.current.style.borderColor = '#7b5cf6'
-    labelRef.current.style.color = '#000'
+    labelRef.current.style.color = '#fff'
   }
   function leave(e) {
     const dir = getDir(e)
     shardRef.current.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
     shardRef.current.style.transform = offscreen[dir]
-    btnRef.current.style.borderColor = '#fff'
-    labelRef.current.style.color = '#000'
+    btnRef.current.style.borderColor = '#0a1628'
+    labelRef.current.style.color = '#fff'
   }
   return (
     <button
@@ -175,13 +175,13 @@ function WatchButton({ onClick }) {
       style={{
         position: 'relative', overflow: 'hidden', cursor: 'pointer',
         fontFamily: 'Raleway, sans-serif', fontWeight: 600, fontSize: 16,
-        padding: '14px 24px', border: '2px solid #fff',
-        background: '#fff', color: '#000', whiteSpace: 'nowrap',
+        padding: '14px 24px', border: '2px solid #0a1628',
+        background: '#0a1628', color: '#fff', whiteSpace: 'nowrap',
         display: 'flex', alignItems: 'center', gap: 8,
       }}
     >
       <span ref={shardRef} aria-hidden="true" style={{ position: 'absolute', inset: 0, background: '#7b5cf6', transform: 'translateY(-110%)', pointerEvents: 'none' }} />
-      <span ref={labelRef} style={{ position: 'relative', zIndex: 10, transition: 'color 0.2s', color: '#000', display: 'flex', alignItems: 'center', gap: 8 }}>
+      <span ref={labelRef} style={{ position: 'relative', zIndex: 10, transition: 'color 0.2s', color: '#fff', display: 'flex', alignItems: 'center', gap: 8 }}>
         <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor" style={{ flexShrink: 0 }}>
           <path d="M0 0L10 6L0 12V0Z" />
         </svg>
